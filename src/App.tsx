@@ -9,13 +9,11 @@ export type Crypto = {
   name: string,
   current_price: number,
   market_cap: number,
-
   total_volume: number,
   high_24h: number,
   low_24h: number,
- 
   total_supply: number,
- 
+
 }
 
 function App() {
@@ -28,23 +26,16 @@ function App() {
       setCrypots(response.data);
     })
 
-
   }, [])
 
 
   return <div className="App">
 
     {crypots ? crypots.map((crypto) => {
-      return <p>{crypto.name+ '$ ' + crypto.current_price}  </p>
+      return <p>{crypto.name + '$ ' + crypto.current_price}  </p>
     }) : null
-
-    
-    
     }
-    
-    
-    </div>;
-
+  </div>;
   ;
 }
 

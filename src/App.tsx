@@ -1,24 +1,13 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import axios from 'axios';
+import CryptoSummary from './components/CryptoSummary';
 
-export type Crypto = {
-
-  id: string,
-  symbol: string,
-  name: string,
-  current_price: number,
-  market_cap: number,
-  total_volume: number,
-  high_24h: number,
-  low_24h: number,
-  total_supply: number,
-
-}
+import { Crypto } from './types/types';
 
 function App() {
-
-  const [crypots, setCrypots] = useState<Crypto[] | null>();
+  const [selected, setSelected] = useState<Crypto | null>(null);
+  const [crypots, setCrypots] = useState<Crypto[] | null>(null);
   useEffect(() => {
 
     let url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en';
@@ -29,14 +18,35 @@ function App() {
   }, [])
 
 
-  return <div className="App">
+  return (
+    <>
+      <div className="App">
 
-    {crypots ? crypots.map((crypto) => {
-      return <p>{crypto.name + '$ ' + crypto.current_price}  </p>
-    }) : null
-    }
-  </div>;
-  ;
+        <select onChange={(e) => {
+          const c = crypots?.find((x) => x.id === e.target.value) || null;
+          console.log(c);
+          setSelected(c)
+        }}
+          defaultValue='default'
+        >
+          {crypots ? crypots.map((crypto) => {
+            return <option key={crypto.id} value={crypto.id}>
+              {crypto.name}
+            </option>
+
+          }) : null
+          }
+          <option value='default'>Choose an option</option>
+        </select>
+
+        {selected && <CryptoSummary crypto={selected} />}
+
+
+      </div>
+    </>
+
+  )
+
 }
 
 export default App;

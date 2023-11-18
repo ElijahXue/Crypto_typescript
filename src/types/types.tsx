@@ -8,4 +8,5 @@ export type Crypto = {
     high_24h: number,
     low_24h: number,
     total_supply: number,
+    owned: number
   }

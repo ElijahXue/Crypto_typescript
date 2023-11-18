@@ -8,7 +8,7 @@ export type AppProps = {
 }
 
 export default function CryptoSummary({ crypto, updateOwned }: AppProps): JSX.Element {
-    const [amount, setAmount] = useState<number>(0);
+    const [amount, setAmount] = useState<number>(NaN);
 
     useEffect(() => {
         console.log(crypto.name, amount, crypto.current_price * (amount))
@@ -16,6 +16,7 @@ export default function CryptoSummary({ crypto, updateOwned }: AppProps): JSX.El
     return (
         <div>
             <span>{crypto.name + '$ ' + crypto.current_price}  </span>
+
             <input
                 type='number'
                 style={{ margin: 10 }}
@@ -23,13 +24,12 @@ export default function CryptoSummary({ crypto, updateOwned }: AppProps): JSX.El
                 onChange={(e) => {
                     setAmount(parseFloat(e.target.value))
                     if (updateOwned) { updateOwned(crypto, parseFloat(e.target.value)) }
-                }}></input>
+                }}>
+            </input>
+
             <p>
                 {isNaN(amount) ? '$0.00' : ('$' + (crypto.current_price * amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
-
                 }
-
-
 
             </p>
         </div>
